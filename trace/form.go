@@ -2,13 +2,13 @@ package trace
 
 import (
 	"fmt"
-	"net"
 	"os"
 	"os/signal"
 	"strings"
 	"time"
 
 	"github.com/sjlleo/nexttrace-GUI/ipgeo"
+	"github.com/sjlleo/nexttrace-GUI/util"
 	"github.com/sjlleo/nexttrace-GUI/wshandle"
 	_ "github.com/ying32/govcl/pkgs/winappres"
 	"github.com/ying32/govcl/vcl"
@@ -112,6 +112,7 @@ func AddData(f *TMainForm, res *Result, ttl int) {
 // }
 
 func (f *TMainForm) NewTrace() {
+	ip := util.DomainLookUp(f.IPInput.Text(), false)
 	f.TraceView.Clear()
 	// 建立 ws
 	w := wshandle.New()
@@ -121,7 +122,6 @@ func (f *TMainForm) NewTrace() {
 		w.Conn.Close()
 	}()
 	// 开始 Traceroute
-	ip := net.ParseIP(f.IPInput.Text())
 	var conf = Config{
 		BeginHop:         1,
 		DestIP:           ip,
@@ -200,134 +200,3 @@ func (f *TMainForm) CreateTraceListPanel() {
 	col.SetCaption("主机名")
 	col.SetWidth(200)
 }
-
-// func main() {
-// vcl.Application.Initialize()
-// vcl.Application.SetMainFormOnTaskBar(true)
-
-// // imgList := vcl.NewImageList(mainForm)
-// if runtime.GOOS == "windows" {
-// 	icon := vcl.NewIcon()
-// 	icon.LoadFromResourceName(rtl.MainInstance(), "MAINICON")
-// 	// imgList.AddIcon(icon)
-// 	// icon.Free()
-// }
-// vcl.RunApp(&mainForm)
-// pnlUp := vcl.NewPanel(mainForm)
-// pnlUp.SetParent(mainForm)
-// pnlUp.SetAlign(types.AlTop)
-// btnTest := vcl.NewButton(mainForm)
-// btnTest.SetParent(pnlUp)
-// btnTest.SetCaption("SetSelected")
-// btnTest.SetWidth(120)
-// btnTest.SetTop(10)
-// btnTest.SetLeft(10)
-// btnTest.SetOnClick(func(sender vcl.IObject) {
-// })
-
-// btnTest2 := vcl.NewButton(mainForm)
-// btnTest2.SetParent(pnlUp)
-// btnTest2.SetTop(10)
-// btnTest2.SetLeft(btnTest.Left() + btnTest.Width() + 10)
-// btnTest2.SetWidth(120)
-// btnTest2.SetCaption("DeleteSelected")
-// btnTest2.SetOnClick(func(sender vcl.IObject) {
-// })
-
-// lv1 := vcl.NewListView(mainForm)
-// lv1.SetParent(mainForm)
-// lv1.SetAlign(types.AlClient)
-// lv1.SetRowSelect(true)
-// lv1.SetReadOnly(true)
-// lv1.SetViewStyle(types.VsReport)
-// lv1.SetGridLines(true)
-// //lv1.SetColumnClick(false)
-// lv1.SetHideSelection(false)
-
-// col := lv1.Columns().Add()
-// col.SetCaption("#")
-// col.SetWidth(40)
-
-// col = lv1.Columns().Add()
-// col.SetCaption("IP")
-// col.SetWidth(130)
-
-// col = lv1.Columns().Add()
-// col.SetCaption("时间(ms)")
-// col.SetWidth(100)
-
-// col = lv1.Columns().Add()
-// col.SetCaption("地址")
-// col.SetWidth(280)
-
-// col = lv1.Columns().Add()
-// col.SetCaption("AS")
-// col.SetWidth(100)
-
-// col = lv1.Columns().Add()
-// col.SetCaption("主机名")
-// col.SetWidth(400)
-
-// // lv3
-// lv3 := vcl.NewListView(mainForm)
-// lv3.SetParent(mainForm)
-// lv3.SetAlign(types.AlClient)
-// lv3.SetRowSelect(true)
-// lv3.SetReadOnly(true)
-// lv3.SetViewStyle(types.VsReport)
-// lv3.SetGridLines(true)
-// // 失去焦点不隐藏选择的
-// lv3.SetHideSelection(false)
-
-// col = lv3.Columns().Add()
-// col.SetCaption("序号")
-// col.SetWidth(100)
-// col = lv3.Columns().Add()
-// col.SetCaption("Sub1")
-// col.SetWidth(100)
-
-// lv3.SetOnClick(func(vcl.IObject) {
-// 	if lv3.ItemIndex() != -1 {
-// 		item := lv3.Selected()
-// 		fmt.Println(item.Caption(), ", ", item.SubItems().Strings(0))
-// 	}
-// })
-// lv3.Items().BeginUpdate()
-// for i := 1; i <= 2; i++ {
-// 	item := lv3.Items().Add()
-// 	item.SetImageIndex(0)
-
-// 	// 第一列为Caption属性所管理
-// 	item.SetCaption(fmt.Sprintf("%d", i))
-// 	item.SubItems().Add(fmt.Sprintf("值：%d", i))
-// }
-// for i := 1; i <= 2; i++ {
-// 	item := lv3.Items().Add()
-// 	item.SetImageIndex(0)
-
-// 	// 第一列为Caption属性所管理
-// 	item.SetCaption(fmt.Sprintf("%d", i))
-// 	item.SubItems().Add(fmt.Sprintf("值：%d", i))
-// }
-// lv3.Items().EndUpdate()
-
-// btnTest3 := vcl.NewButton(mainForm)
-// btnTest3.SetParent(pnlbottom)
-// btnTest3.SetTop(10)
-// btnTest3.SetLeft(btnTest2.Left() + btnTest2.Width() + 10)
-// btnTest3.SetWidth(120)
-// btnTest3.SetCaption("Add Item")
-// btnTest3.SetOnClick(func(sender vcl.IObject) {
-// 	item := lv3.Items().Add()
-// 	item.SetCaption("111")
-// 	item.SubItems().Add("sub")
-
-// 	// 总是显示
-// 	item.MakeVisible(true)
-
-// 	// 如果要选中的话
-// 	item.SetSelected(true)
-
-// })
-
-// }

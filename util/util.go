@@ -5,8 +5,6 @@ import (
 	"log"
 	"net"
 	"os"
-
-	"github.com/fatih/color"
 )
 
 // get the local ip and port based on our destination ip
@@ -56,26 +54,26 @@ func DomainLookUp(host string, ipv4Only bool) net.IP {
 			os.Exit(0)
 		}
 	}
-
-	if len(ipSlice) == 1 {
-		return ipSlice[0]
-	} else {
-		fmt.Println("Please Choose the IP You Want To TraceRoute")
-		for i, ip := range ipSlice {
-			fmt.Fprintf(color.Output, "%s %s\n",
-				color.New(color.FgHiYellow, color.Bold).Sprintf("%d.", i),
-				color.New(color.FgWhite, color.Bold).Sprintf("%s", ip),
-			)
-		}
-		var index int
-		fmt.Printf("Your Option: ")
-		fmt.Scanln(&index)
-		if index >= len(ipSlice) || index < 0 {
-			fmt.Println("Your Option is invalid")
-			os.Exit(3)
-		}
-		return ipSlice[index]
-	}
+	return ipSlice[0]
+	// if len(ipSlice) == 1 {
+	// 	return ipSlice[0]
+	// } else {
+	// 	fmt.Println("Please Choose the IP You Want To TraceRoute")
+	// 	for i, ip := range ipSlice {
+	// 		fmt.Fprintf(color.Output, "%s %s\n",
+	// 			color.New(color.FgHiYellow, color.Bold).Sprintf("%d.", i),
+	// 			color.New(color.FgWhite, color.Bold).Sprintf("%s", ip),
+	// 		)
+	// 	}
+	// 	var index int
+	// 	fmt.Printf("Your Option: ")
+	// 	fmt.Scanln(&index)
+	// 	if index >= len(ipSlice) || index < 0 {
+	// 		fmt.Println("Your Option is invalid")
+	// 		os.Exit(3)
+	// 	}
+	// 	return ipSlice[index]
+	// }
 }
 
 func GetenvDefault(key, defVal string) string {
